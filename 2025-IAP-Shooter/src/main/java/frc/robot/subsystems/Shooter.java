@@ -4,12 +4,42 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
+  private SparkMax shooterWheel;
+  private RelativeEncoder shooterEncoder;
+  private DigitalInput beamBreak;
   /** Creates a new ExampleSubsystem. */
-  public Shooter() {}
+  public Shooter() {
+    shooterWheel = new SparkMax(30, MotorType.kBrushless);
+    shooterEncoder = shooterWheel.getEncoder();  
+    shooterEncoder.setPosition(0);
+    SparkMaxConfig config = new SparkMaxConfig();
+    beamBreak=new DigitalInput(0);
+
+  }
+
+  public void feed(){
+    shooterWheel.set(0.25);
+  }
+  public void stopFeed(){
+    shooterWheel.set(0.25);
+  }
+  public boolean getBeamBreak(){
+    return beamBreak.get();
+  }
+  
+  public double getFlywheelVelocity(){
+    return shooterEncoder.getVelocity();
+  }
 
   /**
    * Example command factory method.
@@ -22,7 +52,14 @@ public class Shooter extends SubsystemBase {
     return runOnce(
         () -> {
           /* one-time action goes here */
+
         });
+  }
+  public void index(){
+
+  }
+  public void startWheel(){
+
   }
 
   /**

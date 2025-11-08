@@ -4,12 +4,20 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkLimitSwitch;
+import com.revrobotics.spark.SparkMax;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AdjustableHood extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  public AdjustableHood() {}
+  
+
+  public AdjustableHood() {
+      
+  }
 
   /**
    * Example command factory method.

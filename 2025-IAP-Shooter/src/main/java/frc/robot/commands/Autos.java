@@ -22,9 +22,9 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 @SuppressWarnings("unused")
 public final class Autos {
-  //public static Command exampleAuto(ExampleSubsystem subsystem) {
-    
-  //}
+  public static Command exampleAuto(ExampleSubsystem subsystem) {
+    return Commands.sequence(subsystem.exampleMethodCommand(), new ExampleCommand(subsystem));
+  }
 
   private Autos() {
     throw new UnsupportedOperationException("This is a utility class!");

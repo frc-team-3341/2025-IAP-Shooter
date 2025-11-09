@@ -20,12 +20,11 @@ import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+@SuppressWarnings("unused")
 public final class Autos {
-  /** Example static factory for an autonomous command. 
-  public static Command exampleAuto(ExampleSubsystem subsystem) {
+  //public static Command exampleAuto(ExampleSubsystem subsystem) {
     
-  }
-  */
+  //}
 
   private Autos() {
     throw new UnsupportedOperationException("This is a utility class!");

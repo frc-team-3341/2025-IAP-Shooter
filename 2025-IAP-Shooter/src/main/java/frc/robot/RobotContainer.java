@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
+@SuppressWarnings("unused")
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -57,7 +58,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
+     //An example command will be run in autonomous
     return Autos.exampleAuto(m_exampleSubsystem);
   }
 }

@@ -5,46 +5,50 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AsynchronousInterrupt;
 import edu.wpi.first.wpilibj.DigitalInput;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VelocityMeasurment extends SubsystemBase {
+  /**Note:
+   * Their are multiple copies of each declaration because eventually their will be two beam breaks.
+   */
   // Create digital inputs on pins 0 & 1
-  private DigitalInput beamBreakOne = new DigitalInput(0);
+  private final DigitalInput beamBreakOne = new DigitalInput(0);
   // private DigitalInput beamBreakTwo = new DigitalInput(1);
   // Create Asynchonous Interupts
-  private AsynchronousInterrupt asychronousInteruptOne = new AsynchronousInterrupt(beamBreakOne, null);
+  private final AtomicBoolean interuptOneTriggered = new AtomicBoolean(false);
+  //private final AtomicBoolean interuptTwoTriggered = new AtomicBoolean(false);
+
+  private final AsynchronousInterrupt asynchronousInterruptOne;
+  //private final AsynchronousInterrupt asynchronousInterruptOne;
+  private ShuffleboardTab tab = Shuffleboard.getTab("Numbers");
+  private GenericEntry beamBroken =
+      tab.add("beam broken? ", false)
+         .getEntry();
+
   
-  public VelocityMeasurment() {}
-
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          
-        });
-  }
-
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
+  public VelocityMeasurment() {
+    asynchronousInterruptOne = new AsynchronousInterrupt(beamBreakOne, (rising, falling) -> {
+      if (rising) {
+        interuptOneTriggered.set(true);
+      }
+    });
+    asynchronousInterruptOne.setInterruptEdges(true, false);
+    asynchronousInterruptOne.enable();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (interuptOneTriggered.getAndSet(false)){
+      beamBroken.setBoolean(true);
+    }
     
   }
 

@@ -10,5 +10,9 @@
 ### Indexing
 
 ### Velocity Measurement
-The velocity measurement subsystem works by using WPILIB's ```java AsynchronousInterrupts``` class.
+The velocity measurement subsystem works by using WPILIB's
+```java 
+AsynchronousInterrupts
+```
+class.
 ## Hood Subsystem.

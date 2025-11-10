@@ -14,6 +14,7 @@ import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+@SuppressWarnings("unused")
 public class VelocityMeasurment extends SubsystemBase {
   /**Note:
    * Their are multiple copies of each declaration because eventually their will be two beam breaks.
@@ -27,9 +28,9 @@ public class VelocityMeasurment extends SubsystemBase {
 
   private final AsynchronousInterrupt asynchronousInterruptOne;
   //private final AsynchronousInterrupt asynchronousInterruptOne;
-  private ShuffleboardTab tab = Shuffleboard.getTab("Numbers");
+  private ShuffleboardTab tab = Shuffleboard.getTab("Beam Breaks");
   private GenericEntry beamBroken =
-      tab.add("beam broken? ", false)
+      tab.add("Beam broken? ", false)
          .getEntry();
 
   
@@ -42,6 +43,7 @@ public class VelocityMeasurment extends SubsystemBase {
     asynchronousInterruptOne.setInterruptEdges(true, false);
     asynchronousInterruptOne.enable();
   }
+
 
   @Override
   public void periodic() {

@@ -44,7 +44,6 @@ public class VelocityMeasurment extends SubsystemBase {
     asynchronousInterruptOne.enable();
   }
 
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

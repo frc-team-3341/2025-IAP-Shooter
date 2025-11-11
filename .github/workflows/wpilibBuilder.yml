@@ -31,7 +31,9 @@ jobs:
     - name: Compile and run tests on robot code
       run: ./gradlew build
     # If problem report is generated then upload it to github artifacts.
-    - uses: actions/upload-artifact@v4
+    - name: Upload Test Report
+      if: faliure()
+      uses: actions/upload-artifact@v4
       with:
         path: build/reports/problems/problems-report.html
         compression-level: 0

@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AsynchronousInterrupt;
 import edu.wpi.first.wpilibj.DigitalInput;
-
 import java.util.concurrent.atomic.AtomicBoolean;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -43,7 +42,6 @@ public class VelocityMeasurment extends SubsystemBase {
     asynchronousInterruptOne.setInterruptEdges(true, false);
     asynchronousInterruptOne.enable();
   }
-
 
   @Override
   public void periodic() {

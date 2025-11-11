@@ -23,7 +23,7 @@ public class VelocityMeasurment extends SubsystemBase {
   private final DigitalInput beamBreakOne = new DigitalInput(0); 
   // private DigitalInput beamBreakTwo = new DigitalInput(1);
   // Create Asynchonous Interupts
-  private final AtdomicBoolean interuptOneTriggered = new AtomicBoolean(false);
+  private final AtomicBoolean interuptOneTriggered = new AtomicBoolean(false);
   //private final AtomicBoolean interuptTwoTriggered = new AtomicBoolean(false);
 
   private final AsynchronousInterrupt asynchronousInterruptOne;

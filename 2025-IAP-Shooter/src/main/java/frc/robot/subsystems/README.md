@@ -1,0 +1,3 @@
+This code file was to test the feedWheel for the old shooter. I don't really have a lot of our new code on this computer, as we usually work on different computers. This was what I decided to push, and its an old test for the wheel. `feedWheel.java` has some errors, as I recycled some old code to create this. However, last session, we were able to fix similar problems on other test files and used the code on the shooter itself. 
+
+All in all, this was just a test for the feed wheel, and it has some errors.

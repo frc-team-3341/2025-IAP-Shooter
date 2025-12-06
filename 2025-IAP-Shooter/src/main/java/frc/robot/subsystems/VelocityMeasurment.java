@@ -33,7 +33,7 @@ public class VelocityMeasurment extends SubsystemBase {
   private double velocity; // in meters per second
 
   // Distance between beam breaks in millimeters
-  private final double distanceBetweenBeams = 0.5;
+  private final double distanceBetweenBeams = 0.5; 
 
   private final AsynchronousInterrupt asynchronousInterruptOne;
   private final AsynchronousInterrupt asynchronousInterruptTwo;
@@ -77,13 +77,12 @@ public class VelocityMeasurment extends SubsystemBase {
         timeDifference = timeTwo - timeOne; // in milliseconds
         velocity = (distanceBetweenBeams / timeDifference); // in meters per second
         velocityEntry.setDouble(velocity);
+      }
     }
-    
-    
   }
-
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
 }
+

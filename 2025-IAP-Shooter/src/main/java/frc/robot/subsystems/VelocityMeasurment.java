@@ -33,7 +33,7 @@ public class VelocityMeasurment extends SubsystemBase {
   private double velocity; // in meters per second
 
   // Distance between beam breaks in millimeters
-  private final double distanceBetweenBeams = 0.5; 
+  private double distanceBetweenBeams = 0.5; 
 
   private final AsynchronousInterrupt asynchronousInterruptOne;
   private final AsynchronousInterrupt asynchronousInterruptTwo;
@@ -44,45 +44,56 @@ public class VelocityMeasurment extends SubsystemBase {
   private GenericEntry beamTwoBroken = tab.add("Beam two broken? ", false).getEntry();
   private GenericEntry velocityEntry = tab.add("Velocity (m/s)", 0).getEntry();
 
-
-  
-  public VelocityMeasurment() {
+  public VelocityMeasurment(double distanceBetweenBeams) {
+    this.distanceBetweenBeams = distanceBetweenBeams; // Configurable distance
     asynchronousInterruptOne = new AsynchronousInterrupt(beamBreakOne, (rising, falling) -> {
-      if (rising) {
-        timeOne = System.currentTimeMillis();
-        interuptOneTriggered.set(true);
+      if (falling) {
+        synchronized (this) {
+          timeOne = System.currentTimeMillis();
+          interuptOneTriggered.set(true);
+        }
       }
     });
-    asynchronousInterruptOne.setInterruptEdges(true, false);
+    asynchronousInterruptOne.setInterruptEdges(false, true);
     asynchronousInterruptOne.enable();
 
     asynchronousInterruptTwo = new AsynchronousInterrupt(beamBreakTwo, (rising, falling) -> {
-      if (rising) {
-        timeTwo = System.currentTimeMillis();
-        interuptTwoTriggered.set(true);
+      if (falling) {
+        synchronized (this) {
+          timeTwo = System.currentTimeMillis();
+          interuptTwoTriggered.set(true);
+        }
       }
     });
-    asynchronousInterruptTwo.setInterruptEdges(true, false);
+    asynchronousInterruptTwo.setInterruptEdges(false, true);
     asynchronousInterruptTwo.enable();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (interuptOneTriggered.getAndSet(false)){
-      beamOneBroken.setBoolean(true);
-      if (interuptTwoTriggered.getAndSet(false)){
-        beamTwoBroken.setBoolean(true);
-        // Calculate velocity
-        timeDifference = timeTwo - timeOne; // in milliseconds
-        velocity = (distanceBetweenBeams / timeDifference); // in meters per second
-        velocityEntry.setDouble(velocity);
+    synchronized (this) {
+      if (interuptOneTriggered.getAndSet(false)) {
+        beamOneBroken.setBoolean(true);
+        if (interuptTwoTriggered.getAndSet(false)) {
+          beamTwoBroken.setBoolean(true);
+
+          // Calculate velocity
+          timeDifference = timeTwo - timeOne; // in milliseconds
+          double timeDifferenceInSeconds = timeDifference / 1000.0; // Convert to seconds
+          velocity = distanceBetweenBeams / timeDifferenceInSeconds; // Velocity in m/s
+          velocityEntry.setDouble(velocity);
+
+          // Reset beam states
+          beamOneBroken.setBoolean(false);
+          beamTwoBroken.setBoolean(false);
+        }
       }
     }
   }
+
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
 }
-

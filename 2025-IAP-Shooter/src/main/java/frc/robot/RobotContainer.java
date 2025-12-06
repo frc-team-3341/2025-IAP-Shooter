@@ -48,7 +48,10 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    
+    m_driverController.a().onTrue(shoot.shoot());
+    m_driverController.b().onTrue(shoot.feed());
+    m_driverController.a().onTrue(shoot.stopShoot());
+    m_driverController.b().onTrue(shoot.stopFeed());
   }
 
   /**

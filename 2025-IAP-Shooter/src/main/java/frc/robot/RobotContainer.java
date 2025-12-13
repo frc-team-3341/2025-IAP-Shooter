@@ -48,10 +48,12 @@ public class RobotContainer {
    */
   private void createShooter() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    m_driverController.a().onTrue(shoot.shoot());
-    m_driverController.b().onTrue(shoot.feed());
-    m_driverController.a().onTrue(shoot.stopShoot());
-    m_driverController.b().onTrue(shoot.stopFeed());
+    Trigger feedWheelBeamBreak = new Trigger(() -> shoot.beamBreak1());
+    //put command here PLEEEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAASSSSSSSSSSSSSSSSSEEEEEEEEEEEE
+    //feedWheelBeamBreak.onTrue();
+    m_driverController.a().onTrue(shoot.shoot()).onFalse(shoot.stopShoot());
+    m_driverController.b().onTrue(shoot.feed()).onFalse(shoot.stopFeed());
+    
   }
 
   private void createHood() {
@@ -63,6 +65,7 @@ public class RobotContainer {
       return adjustableHood.downLimitSwitch();
     });
     
+
     hoodHoming.onFalse(adjustableHood.resetEncoder());
   }
   

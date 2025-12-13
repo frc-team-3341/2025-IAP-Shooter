@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-//--------------------------------------------------
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -39,6 +37,7 @@ public class Shooter extends SubsystemBase {
 
     SparkMaxConfig config = new SparkMaxConfig();
     beamBreak=new DigitalInput(0);
+
       /** Creates a new BallShooter. */
     /*flywheel.configFactoryDefault();
     feedwheel.configFactoryDefault();
@@ -75,6 +74,16 @@ public class Shooter extends SubsystemBase {
 
   public double getShooterVelocity(){
     return shooterEncoder.getVelocity();
+  }
+
+  public boolean beamBreak1(){
+    return beamBreak.get();
+  }
+  public Command FeedFromBeam() {
+    return runOnce(
+        () -> {
+          feedWheel.set( 0.75);
+        });
   }
 //---------------------------------------------------------------------
 /*

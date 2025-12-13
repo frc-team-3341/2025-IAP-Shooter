@@ -48,9 +48,9 @@ public class AdjustableHood extends SubsystemBase {
     
 
     config.closedLoop.pid(
-    .1, //p
-    0.001, //i
-    0.001 //d
+    .01, //p
+    0, //i
+    0 //d
     );
 
     config.closedLoop.maxMotion

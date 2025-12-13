@@ -9,6 +9,8 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.LimitSwitchConfig;
 import com.revrobotics.spark.config.LimitSwitchConfig.Type;
@@ -72,6 +74,7 @@ public class AdjustableHood extends SubsystemBase {
       this.rel_encoder.setPosition(0);
       homedStartup = true;
     }
+    hoodGear.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
 

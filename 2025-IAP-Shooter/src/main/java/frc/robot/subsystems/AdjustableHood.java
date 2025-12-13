@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -15,6 +17,7 @@ import com.revrobotics.spark.config.LimitSwitchConfig.Type;
 import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -53,13 +56,6 @@ public class AdjustableHood extends SubsystemBase {
     0 //d
     );
 
-    config.closedLoop.maxMotion
-       .maxVelocity(5000) //in rpm
-       .maxAcceleration(4400) // in rpm/s
-       .allowedClosedLoopError(1);
-
-    config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-
     softLimitConfig.forwardSoftLimitEnabled(true); //enables the forward soft limit
     softLimitConfig.reverseSoftLimitEnabled(true); //enables the reverse soft limit
     softLimitConfig.forwardSoftLimit(0);
@@ -72,6 +68,7 @@ public class AdjustableHood extends SubsystemBase {
       this.rel_encoder.setPosition(0);
       homedStartup = true;
     }
+    hoodGear.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
 
@@ -85,6 +82,8 @@ public class AdjustableHood extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("set point", setpoint);
+    SmartDashboard.putNumber("gear position", rel_encoder.getPosition());
   }
 
   @Override

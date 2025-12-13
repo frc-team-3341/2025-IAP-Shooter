@@ -5,12 +5,15 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -20,7 +23,9 @@ public class Shooter extends SubsystemBase {
   private RelativeEncoder shooterEncoder;
   private RelativeEncoder feedEncoder;
   private DigitalInput beamBreak;
-  private BangBangController bang = new BangBangController();
+  private DigitalInput beamBreak2;
+  private SparkClosedLoopController feedWheeelController;
+  private SparkClosedLoopController shootWheeelController;
   /*public final WPI_TalonSRX flywheel = new WPI_TalonSRX(4);
   public final WPI_TalonSRX feedwheel = new WPI_TalonSRX(3);*/
   public double feedSpeed=0;
@@ -28,22 +33,40 @@ public class Shooter extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Shooter() {
     shooterWheel = new SparkMax(30, MotorType.kBrushless);
+    feedWheeelController=this.feedWheel.getClosedLoopController();
     shooterEncoder = shooterWheel.getEncoder();  
     shooterEncoder.setPosition(0);
+    SparkMaxConfig fconfig = new SparkMaxConfig();
 
     feedWheel = new SparkMax(30, MotorType.kBrushless);
+    shootWheeelController=this.shooterWheel.getClosedLoopController();
     feedEncoder = shooterWheel.getEncoder();  
     feedEncoder.setPosition(0);
-
-    SparkMaxConfig config = new SparkMaxConfig();
+    SparkMaxConfig sconfig = new SparkMaxConfig();
+    
     beamBreak=new DigitalInput(0);
+    beamBreak2 =new DigitalInput(1);
 
-      /** Creates a new BallShooter. */
+    /** Creates a new BallShooter. */
     /*flywheel.configFactoryDefault();
     feedwheel.configFactoryDefault();
     flywheel.setInverted(false);
     flywheel.setNeutralMode(NeutralMode.Coast);
     flywheel.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);*/
+
+    fconfig.closedLoop.pid(
+    .01, //p
+    0, //i
+    0 //d
+    );
+
+    sconfig.closedLoop.pid(
+    .01, //p
+    0, //i
+    0 //d
+    );
+    feedWheel.configure(fconfig,ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    shooterWheel.configure(fconfig,ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
   }
 
@@ -71,6 +94,13 @@ public class Shooter extends SubsystemBase {
           shooterWheel.set(0);
         });
   }
+  public Command feedFromBeam() {
+    return runOnce(
+        () -> {
+          feedWheeelController.setReference(10, SparkMax.ControlType.kMAXMotionPositionControl);
+        });
+  }
+
 
   public double getShooterVelocity(){
     return shooterEncoder.getVelocity();
@@ -79,12 +109,15 @@ public class Shooter extends SubsystemBase {
   public boolean beamBreak1(){
     return beamBreak.get();
   }
-  public Command FeedFromBeam() {
-    return runOnce(
-        () -> {
-          feedWheel.set( 0.75);
-        });
+
+  public boolean beamBreak2(){
+    return beamBreak2.get();
   }
+
+  public double getShooterSpeed(){
+    return shooterEncoder.getVelocity();
+  }
+
 //---------------------------------------------------------------------
 /*
   public Command shoot() {
@@ -127,6 +160,8 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Shooter Speed", shooterEncoder.getVelocity());
+    SmartDashboard.putNumber("Feed Position", feedEncoder.getPosition());
   }
 
   @Override

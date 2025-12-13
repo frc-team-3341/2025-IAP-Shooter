@@ -94,6 +94,13 @@ public class Shooter extends SubsystemBase {
           shooterWheel.set(0);
         });
   }
+  public Command feedFromBeam() {
+    return runOnce(
+        () -> {
+          feedWheeelController.setReference(10, SparkMax.ControlType.kMAXMotionPositionControl);
+        });
+  }
+
 
   public double getShooterVelocity(){
     return shooterEncoder.getVelocity();

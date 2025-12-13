@@ -4,26 +4,115 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.math.controller.BangBangController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
+  private SparkMax shooterWheel;
+  private SparkMax feedWheel;
+  private RelativeEncoder shooterEncoder;
+  private RelativeEncoder feedEncoder;
+  private DigitalInput beamBreak;
+  private BangBangController bang = new BangBangController();
+  /*public final WPI_TalonSRX flywheel = new WPI_TalonSRX(4);
+  public final WPI_TalonSRX feedwheel = new WPI_TalonSRX(3);*/
+  public double feedSpeed=0;
+  public double shootSpeed=0;
   /** Creates a new ExampleSubsystem. */
-  public Shooter() {}
+  public Shooter() {
+    shooterWheel = new SparkMax(30, MotorType.kBrushless);
+    shooterEncoder = shooterWheel.getEncoder();  
+    shooterEncoder.setPosition(0);
 
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    feedWheel = new SparkMax(30, MotorType.kBrushless);
+    feedEncoder = shooterWheel.getEncoder();  
+    feedEncoder.setPosition(0);
+
+    SparkMaxConfig config = new SparkMaxConfig();
+    beamBreak=new DigitalInput(0);
+
+      /** Creates a new BallShooter. */
+    /*flywheel.configFactoryDefault();
+    feedwheel.configFactoryDefault();
+    flywheel.setInverted(false);
+    flywheel.setNeutralMode(NeutralMode.Coast);
+    flywheel.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);*/
+
+  }
+
+  public Command feed() {
     return runOnce(
         () -> {
-          /* one-time action goes here */
+          shooterWheel.set( -0.1);
         });
   }
+  public Command stopFeed() {
+    return runOnce(
+        () -> {
+          feedWheel.set( 0);
+        });
+  }
+  public Command shoot() {
+    return runOnce(
+        () -> {
+          shooterWheel.set(0.5);
+        });
+  }
+  public Command stopShoot() {
+    return runOnce(
+        () -> {
+          shooterWheel.set(0);
+        });
+  }
+
+  public double getShooterVelocity(){
+    return shooterEncoder.getVelocity();
+  }
+
+  public boolean beamBreak1(){
+    return beamBreak.get();
+  }
+  public Command FeedFromBeam() {
+    return runOnce(
+        () -> {
+          feedWheel.set( 0.75);
+        });
+  }
+//---------------------------------------------------------------------
+/*
+  public Command shoot() {
+    return runOnce(
+        () -> {
+          flywheel.set(ControlMode.PercentOutput, 0.5);
+        });
+  }
+  public Command feed() {
+    return runOnce(
+        () -> {
+          feedwheel.set(ControlMode.PercentOutput, 0.25);
+        });
+  }
+  public Command stopShoot() {
+    return runOnce(
+        () -> {
+          flywheel.set(ControlMode.PercentOutput, 0);
+        });
+  }
+  public Command stopFeed() {
+    return runOnce(
+        () -> {
+          feedwheel.set(ControlMode.PercentOutput, 0);
+        });
+  }
+*/  
+//-------------------------------------------------------------------------------------------------
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).

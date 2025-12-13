@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
@@ -12,6 +13,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ShooterCMD;
+import frc.robot.subsystems.AdjustableHood;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,10 +25,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-@SuppressWarnings("unused")
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private Shooter shoot = new Shooter();
+  private AdjustableHood adjustableHood;
+  private ShooterCMD shootCMD = new ShooterCMD(shoot);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -31,7 +39,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    configureBindings();
+    createShooter();
+    createHood();
   }
 
   /**
@@ -43,16 +52,29 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {
+  private void createShooter() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    Trigger feedWheelBeamBreak = new Trigger(() -> shoot.beamBreak1());
+    //put command here PLEEEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAASSSSSSSSSSSSSSSSSEEEEEEEEEEEE
+    //feedWheelBeamBreak.onTrue();
+    m_driverController.a().onTrue(shoot.shoot()).onFalse(shoot.stopShoot());
+    m_driverController.b().onTrue(shoot.feed()).onFalse(shoot.stopFeed());
+    
   }
 
+  private void createHood() {
+    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+    adjustableHood = new AdjustableHood();
+
+    //Creates a new trigger for when the rev limit is pressed.
+    Trigger hoodHoming = new Trigger(() -> {
+      return adjustableHood.downLimitSwitch();
+    });
+    
+
+    hoodHoming.onFalse(adjustableHood.resetEncoder());
+  }
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

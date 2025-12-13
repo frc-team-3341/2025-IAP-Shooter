@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -105,7 +106,7 @@ public class Shooter extends SubsystemBase {
   public boolean beamBreak2(){
     return beamBreak2.get();
   }
-  
+
   public double getShooterSpeed(){
     return shooterEncoder.getVelocity();
   }
@@ -152,6 +153,8 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Shooter Speed", shooterEncoder.getVelocity());
+    SmartDashboard.putNumber("Feed Position", feedEncoder.getPosition());
   }
 
   @Override

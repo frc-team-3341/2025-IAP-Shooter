@@ -5,10 +5,6 @@
 package frc.robot;
 
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -54,11 +50,15 @@ public class RobotContainer {
    */
   private void createShooter() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    Trigger feedWheelBeamBreak = new Trigger(() -> shoot.beamBreak1());
-    //put command here PLEEEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAASSSSSSSSSSSSSSSSSEEEEEEEEEEEE
-    //feedWheelBeamBreak.onTrue();
-    m_driverController.a().onTrue(shoot.shoot()).onFalse(shoot.stopShoot());
-    m_driverController.b().onTrue(shoot.feed()).onFalse(shoot.stopFeed());
+    Trigger shootWheelbeamBreak = new Trigger(() -> shoot.beamBreak2());
+
+    shootWheelbeamBreak.onTrue(shoot.beamBreakfly());
+    
+    //m_driverController.a().and(shootWheelbeamBreak.negate()).onTrue(shoot.shoot());
+    //m_driverController.a().and(shootWheelbeamBreak.negate()).onFalse(shoot.shoot());
+
+    m_driverController.b().onTrue(shoot.feed());
+    m_driverController.b().onFalse(shoot.stopFeed());
     
   }
 

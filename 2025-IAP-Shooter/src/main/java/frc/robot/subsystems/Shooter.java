@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -97,8 +98,19 @@ public class Shooter extends SubsystemBase {
   public Command feedFromBeam() {
     return runOnce(
         () -> {
-          feedWheeelController.setReference(10, SparkMax.ControlType.kMAXMotionPositionControl);
+          feedWheel.set(0.1);
         });
+  }
+  public Command beamBreakfly(){
+    return runOnce(()->{
+      shootWheeelController.setReference(4000, SparkMax.ControlType.kVelocity);
+      if(shooterEncoder.getPosition()>3900 && shooterEncoder.getVelocity()<4100){
+        feedWheeelController.setReference(5, ControlType.kPosition);
+      }
+      else{
+        feedWheel.set(0);
+      }
+    });
   }
 
 

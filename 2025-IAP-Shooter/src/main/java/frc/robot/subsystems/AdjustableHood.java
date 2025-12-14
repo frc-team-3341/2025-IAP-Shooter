@@ -95,12 +95,8 @@ public class AdjustableHood extends SubsystemBase {
     return runOnce(
         () -> {
           if (this.homedStartup){
-          //L1 height is inches
-          //setting the height to be 10 inches 
           setpoint = 1;
-          PIDController.setReference(setpoint * 25, SparkMax.ControlType.kMAXMotionPositionControl);
-          //System.out.println("Elevator L1");
-          //https://docs.revrobotics.com/revlib/spark/closed-loop/position-control-mode
+          PIDController.setReference(setpoint, SparkMax.ControlType.kPosition);
           }
         });
   }
@@ -108,12 +104,8 @@ public class AdjustableHood extends SubsystemBase {
     return runOnce(
         () -> {
           if (this.homedStartup){
-          //L1 height is inches
-          //setting the height to be 10 inches 
           setpoint = 2;
-          PIDController.setReference(setpoint * 25, SparkMax.ControlType.kMAXMotionPositionControl);
-          //System.out.println("Elevator L1");
-          //https://docs.revrobotics.com/revlib/spark/closed-loop/position-control-mode
+          PIDController.setReference(setpoint, SparkMax.ControlType.kPosition);
           }
         });
   }

@@ -113,6 +113,20 @@ public class Shooter extends SubsystemBase {
     });
   }
 
+  public Command beamBreakFly() {
+    if(beamBreak1()) {
+      return runOnce(
+      () -> {
+      feedWheel.set(0.5);
+      });
+    }
+    else {
+      return runOnce(
+        () -> {
+          feedWheel.set(0);
+        });
+    }
+  }
 
   public double getShooterVelocity(){
     return shooterEncoder.getVelocity();

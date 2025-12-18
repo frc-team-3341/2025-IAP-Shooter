@@ -33,13 +33,13 @@ public class Shooter extends SubsystemBase {
   public double shootSpeed=0;
   /** Creates a new ExampleSubsystem. */
   public Shooter() {
-    shooterWheel = new SparkMax(30, MotorType.kBrushless);
+    shooterWheel = new SparkMax(3, MotorType.kBrushless);
     feedWheeelController=this.feedWheel.getClosedLoopController();
     shooterEncoder = shooterWheel.getEncoder();  
     shooterEncoder.setPosition(0);
     SparkMaxConfig fconfig = new SparkMaxConfig();
 
-    feedWheel = new SparkMax(30, MotorType.kBrushless);
+    feedWheel = new SparkMax(2, MotorType.kBrushless);
     shootWheeelController=this.shooterWheel.getClosedLoopController();
     feedEncoder = shooterWheel.getEncoder();  
     feedEncoder.setPosition(0);

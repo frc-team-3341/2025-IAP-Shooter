@@ -1,4 +1,0 @@
-Todays commit has our test code for beambreaks (without asynchornous interuppts), and is mainly old code. We do have new code for the shooter, but that's on another person's computer. This code was to test beambrakes on the old shooter, and served as a base/refrence point for our new, improved code. Using this code, we found some issues with the breambreakers, and spent time trying to resolve them.
-
-
-The beambreakers weren't working, and we used different methods to fix that. Ultimatly, we decided to wait for our new shooter, as it will be done on 12/13, and testing on the new one can begin. By that time, we will have completed most of the code, and it will just need some minor edits.

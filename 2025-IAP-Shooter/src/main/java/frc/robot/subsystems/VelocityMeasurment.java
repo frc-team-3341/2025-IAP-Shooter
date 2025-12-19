@@ -13,14 +13,11 @@ import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-@SuppressWarnings("unused")
+
 public class VelocityMeasurment extends SubsystemBase {
-  /**Note:
-   * Their are multiple copies of each declaration because eventually their will be two beam breaks.
-   */
   // Create digital inputs on pins 0 & 1
   private final DigitalInput beamBreakOne = new DigitalInput(0); 
-  private DigitalInput beamBreakTwo = new DigitalInput(1);
+  private final DigitalInput beamBreakTwo = new DigitalInput(1);
 
   // Create Asynchonous Interupts
   private final AtomicBoolean interuptOneTriggered = new AtomicBoolean(false);
@@ -30,10 +27,10 @@ public class VelocityMeasurment extends SubsystemBase {
   private long timeOne;
   private long timeTwo;
   private long timeDifference;
-  private double velocity; // in meters per second
+  private double velocity; 
 
   // Distance between beam breaks in millimeters
-  private double distanceBetweenBeams = 0.5; 
+  private final double distanceBetweenBeams = 0.5; 
 
   private final AsynchronousInterrupt asynchronousInterruptOne;
   private final AsynchronousInterrupt asynchronousInterruptTwo;
@@ -45,13 +42,10 @@ public class VelocityMeasurment extends SubsystemBase {
   private GenericEntry velocityEntry = tab.add("Velocity (m/s)", 0).getEntry();
 
   public VelocityMeasurment(double distanceBetweenBeams) {
-    this.distanceBetweenBeams = distanceBetweenBeams; // Configurable distance
     asynchronousInterruptOne = new AsynchronousInterrupt(beamBreakOne, (rising, falling) -> {
       if (falling) {
-        synchronized (this) {
-          timeOne = System.currentTimeMillis();
-          interuptOneTriggered.set(true);
-        }
+        timeOne = System.currentTimeMillis();
+        interuptOneTriggered.set(true);
       }
     });
     asynchronousInterruptOne.setInterruptEdges(false, true);
@@ -59,10 +53,8 @@ public class VelocityMeasurment extends SubsystemBase {
 
     asynchronousInterruptTwo = new AsynchronousInterrupt(beamBreakTwo, (rising, falling) -> {
       if (falling) {
-        synchronized (this) {
-          timeTwo = System.currentTimeMillis();
-          interuptTwoTriggered.set(true);
-        }
+        timeTwo = System.currentTimeMillis();
+        interuptTwoTriggered.set(true);
       }
     });
     asynchronousInterruptTwo.setInterruptEdges(false, true);
@@ -91,7 +83,6 @@ public class VelocityMeasurment extends SubsystemBase {
       }
     }
   }
-
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation

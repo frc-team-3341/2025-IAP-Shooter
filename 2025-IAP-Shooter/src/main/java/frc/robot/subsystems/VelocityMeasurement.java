@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
-public class VelocityMeasurment extends SubsystemBase {
+public class VelocityMeasurement extends SubsystemBase {
   // Create digital inputs on pins 0 & 1
   private final DigitalInput beamBreakOne = new DigitalInput(0); 
   private final DigitalInput beamBreakTwo = new DigitalInput(1);
@@ -41,7 +41,7 @@ public class VelocityMeasurment extends SubsystemBase {
   private GenericEntry beamTwoBroken = tab.add("Beam two broken? ", false).getEntry();
   private GenericEntry velocityEntry = tab.add("Velocity (m/s)", 0).getEntry();
 
-  public VelocityMeasurment(double distanceBetweenBeams) {
+  public VelocityMeasurement(double distanceBetweenBeams) {
     asynchronousInterruptOne = new AsynchronousInterrupt(beamBreakOne, (rising, falling) -> {
       if (falling) {
         timeOne = System.currentTimeMillis();

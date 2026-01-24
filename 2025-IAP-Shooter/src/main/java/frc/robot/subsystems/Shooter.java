@@ -34,7 +34,7 @@ public class Shooter extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Shooter() {
     shooterWheel = new SparkMax(3, MotorType.kBrushless);
-    feedWheeelController=this.feedWheel.getClosedLoopController();
+    feedWheeelController = this.feedWheel.getClosedLoopController();
     shooterEncoder = shooterWheel.getEncoder();  
     shooterEncoder.setPosition(0);
     SparkMaxConfig fconfig = new SparkMaxConfig();
@@ -54,12 +54,6 @@ public class Shooter extends SubsystemBase {
     flywheel.setInverted(false);
     flywheel.setNeutralMode(NeutralMode.Coast);
     flywheel.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);*/
-
-    fconfig.closedLoop.pid(
-    .01, //p
-    0, //i
-    0 //d
-    );
 
     sconfig.closedLoop.pid(
     .01, //p
@@ -86,7 +80,8 @@ public class Shooter extends SubsystemBase {
   public Command shoot() {
     return runOnce(
         () -> {
-          shooterWheel.set(0.5);
+          // shooterWheel.set(0.5);
+          feedWheeelController.setReference(5, ControlType.kPosition);
         });
   }
   public Command stopShoot() {

@@ -59,6 +59,7 @@ public class RobotContainer {
 
     m_driverController.b().onTrue(shoot.feed());
     m_driverController.b().onFalse(shoot.stopFeed());
+    m_driverController.x().onTrue(shoot.StopMotors());
     
   }
 

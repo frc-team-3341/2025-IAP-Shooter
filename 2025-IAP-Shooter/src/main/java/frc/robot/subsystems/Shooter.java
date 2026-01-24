@@ -93,7 +93,14 @@ public class Shooter extends SubsystemBase {
   public Command feedFromBeam() {
     return runOnce(
         () -> {
-          feedWheel.set(0.1);
+          feedWheel.set(0.2);
+        });
+  }
+  public Command StopMotors() {
+    return runOnce(
+        () -> {
+          feedWheel.set(0);
+          shooterWheel.set(0);
         });
   }
   public Command beamBreakfly(){

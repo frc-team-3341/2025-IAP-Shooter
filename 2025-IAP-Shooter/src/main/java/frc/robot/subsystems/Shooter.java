@@ -188,8 +188,10 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Shooter Speed", shooterEncoder.getVelocity());
-    SmartDashboard.putNumber("Feed Position", feedEncoder.getPosition());
+    double rpm = SmartDashboard.getNumber("Shooter Speed", 0);
+
+    shootWheeelController.setReference(rpm, SparkMax.ControlType.kVelocity);
+    feedWheel.set(0.5);
   }
 
   @Override

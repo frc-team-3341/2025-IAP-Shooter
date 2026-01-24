@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ShooterCMD;
 import frc.robot.subsystems.AdjustableHood;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -23,7 +22,6 @@ import frc.robot.subsystems.Shooter;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private Shooter shoot = new Shooter();
   private AdjustableHood adjustableHood;
   private ShooterCMD shootCMD = new ShooterCMD(shoot);
